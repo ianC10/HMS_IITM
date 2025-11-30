@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome, {{ patient.name }}</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Book Appointment</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label>Select Doctor</label>
+                        <select name="doctor_id" class="form-control">
+                            {% for doc in doctors %}
+                            <option value="{{ doc.id }}">{{ doc.name }} ({{ doc.specialization }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3"><input type="date" name="date" class="form-control" required></div>
+                    <div class="mb-3"><input type="time" name="time" class="form-control" required></div>
+                    <button class="btn btn-success w-100">Book Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">My History</div>
+            <div class="card-body">
+                <table class="table">
+                    <tr><th>Date</th><th>Doctor</th><th>Status</th><th>Details</th></tr>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td>{{ appt.date_time }}</td>
+                        <td>{{ appt.doctor.name }}</td>
+                        <td>{{ appt.status }}</td>
+                        <td>
+                            {% if appt.status == 'Completed' %}
+                                <strong>Diag:</strong> {{ appt.diagnosis }}<br>
+                                <strong>Rx:</strong> {{ appt.prescription }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
